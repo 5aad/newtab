@@ -10,8 +10,9 @@ import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import adjust from "../TabSetting/adjust.png";
-import Clock from "../Clock/clock";
-import "./switchColor.css"
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import "./switchColor.css";
 // styles
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,9 +22,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   iconPos: {
-    position: "relative",
-    top: "240px",
-    left: "640px",
+    position: "absolute",
+    bottom: "30px",
+    marginBottom: "10px",
+    right: "30px",
+    marginRight: "10px",
     cursor: "pointer"
   },
   paperColor: {
@@ -35,10 +38,19 @@ const useStyles = makeStyles(theme => ({
     padding: "10px",
     textAlign: "left"
   },
-  
+  formControl: {
+    // margin: theme.spacing(1),
+    minWidth: 80,
+    color: "white",
+    paddingLeft: "10px"
+  },
+  selectEmpty: {
+    // marginTop: theme.spacing(2),
+    color: "white"
+  }
 }));
 
-export default function MenuListComposition() {
+export default function MenuListComposition(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -47,13 +59,14 @@ export default function MenuListComposition() {
     setOpen(prevOpen => !prevOpen);
   };
 
-  const handleClose = event => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
+  //close panel
+  // const handleClose = event => {
+  //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
+  //     return;
+  //   }
 
-    setOpen(false);
-  };
+  //   setOpen(false);
+  // };
 
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
@@ -75,12 +88,12 @@ export default function MenuListComposition() {
   // switch states and hide
   const [state, setState] = React.useState({
     checkedA: true,
-    checkedB: false,
-    checkedC: false,
+    checkedB: true,
     checkedD: false,
     checkedE: false,
     checkedF: false,
-    hideClock: false
+    hideSearch: true,
+    hideClock: true
   });
 
   const handleChange = name => event => {
@@ -90,17 +103,27 @@ export default function MenuListComposition() {
         [name]: event.target.checked,
         hideClock: !state.hideClock
       });
+      props.clockHide(state.hideClock);
+    } else if (name === "checkedB") {
+      setState({
+        ...state,
+        [name]: event.target.checked,
+        hideSearch: !state.hideSearch
+      });
+      props.searchHide(state.hideSearch);
     } else {
       setState({ ...state, [name]: event.target.checked });
     }
   };
 
+  // select or DropDown
+  const [eng, setEng] = React.useState("");
+  const handleChanges = event => {
+    setEng(event.target.value);
+  };
+
   return (
     <>
-      {/* clock component */}
-      <div hidden={state.hideClock}>
-        <Clock />
-      </div>
       <div className={classes.root}>
         <div>
           <img
@@ -131,7 +154,9 @@ export default function MenuListComposition() {
                 {/* panel */}
                 <Paper className={classes.paperColor}>
                   <h5 className={classes.headStyle}>New Tab Settings</h5>
-                  <ClickAwayListener onClickAway={handleClose}>
+                  <ClickAwayListener
+                  // onClickAway={handleClose}
+                  >
                     <MenuList
                       autoFocusItem={open}
                       id="menu-list-grow"
@@ -188,18 +213,19 @@ export default function MenuListComposition() {
                       </MenuItem>
                       <MenuItem o>
                         Default Search Engine{" "}
-                        <FormGroup>
-                          <FormControlLabel
-                            style={{ paddingLeft: "61px", marginRight: "0px" }}
-                            control={
-                              <Switch
-                                size="small"
-                                checked={state.checkedC}
-                                onChange={handleChange("checkedC")}
-                              />
-                            }
-                          />
-                        </FormGroup>
+                        <FormControl className={classes.formControl}>
+                          <Select
+                            value={eng}
+                            onChange={handleChanges}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                          >
+                            <MenuItem value="">
+                              <em>Google</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Google</MenuItem>
+                          </Select>
+                        </FormControl>
                       </MenuItem>
 
                       <MenuItem>
@@ -227,7 +253,6 @@ export default function MenuListComposition() {
                             style={{ paddingLeft: "80px", marginRight: "0px" }}
                             control={
                               <Switch
-                                
                                 size="small"
                                 checked={state.checkedF}
                                 onChange={handleChange("checkedF")}

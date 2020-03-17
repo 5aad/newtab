@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SearchBar.css';
 
-import ReactGA from 'react-ga';
+// import ReactGA from 'react-ga';
 
 
 
@@ -38,13 +38,13 @@ class SearchBar extends React.Component{
 
   render() {
      return (
-      <fieldset class="field-container">
-        <input type="text" placeholder="Search Google" class="field" onClick={this.sendToSearch} onKeyPress={this.handleKeyPress} style={{fontSize : '20px'}}/>
-        <div class="icons-container">
-        <div class="icon-search"></div>
-        <div class="icon-close">
-            <div class="x-up"></div>
-            <div class="x-down"></div>
+      <fieldset className="field-container">
+        <input type="text" placeholder="Search Google" className="field" onClick={this.sendToSearch} onKeyPress={this.handleKeyPress} style={{fontSize : '20px'}}/>
+        <div className="icons-container">
+        <div className="icon-search"></div>
+        <div className="icon-close">
+            <div className="x-up"></div>
+            <div className="x-down"></div>
         </div>
         </div>
       </fieldset>
