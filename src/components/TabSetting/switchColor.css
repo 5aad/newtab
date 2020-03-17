@@ -1,0 +1,8 @@
+
+.MuiSwitch-colorSecondary.Mui-checked{
+    color: orange !important;
+}
+
+.MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track{
+    background-color: lightsalmon !important;
+}
